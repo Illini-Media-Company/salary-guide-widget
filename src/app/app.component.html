@@ -7,47 +7,121 @@
 
     <mat-tab label="Salary Lookup">
         <div class="content">
-            <div>
+            <div class="searchContainer">
                 <mat-form-field class="searchOption" appearance="outline">
                     <mat-label>Year</mat-label>
                     <mat-select [(value)]="defaultYear">
-                        <mat-option value="2021">2021</mat-option>
+                        <mat-option value="2022">2022</mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <mat-form-field class="searchOption" appearance="outline">
-                    <mat-label>Department</mat-label>
-                    <mat-select [(value)]="defaultDepartment">
-                        <mat-option value="All">All</mat-option>
+                    <mat-label>Campus</mat-label>
+                    <mat-select [(value)]="defaultCampus">
+                        <mat-option value="UIUC">UIUC</mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <mat-form-field class="searchOption" appearance="outline">
                     <mat-label>Name</mat-label>
-                    <input matInput #nameInput [(ngModel)]="nameSearch">
+                    <input matInput
+                        (keyup)="applyFilter($event)"
+                        #nameInput>
+                </mat-form-field>
+
+                <mat-form-field class="filterField" appearance="outline">
+                    <mat-label>Filters</mat-label>
+                    <mat-chip-list #chipList>
+                        <mat-chip
+                            *ngIf="filterCollege"
+                            (removed)="remove(filterCollege)">
+                            {{filterCollege}}
+                            <button matChipRemove>
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip
+                            *ngIf="filterDepartment"
+                            (removed)="remove(filterDepartment)">
+                            {{filterDepartment}}
+                            <button matChipRemove>
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <input
+                            placeholder="{{
+                                filterDepartment ? '' : (filterCollege ? 'Select department...' : 'Select college...')
+                            }}"
+                            #filterInput
+                            [formControl]="filterCtrl"
+                            [matAutocomplete]="auto"
+                            [matChipInputFor]="chipList">
+                    </mat-chip-list>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event)">
+                        <mat-option *ngFor="let option of autocompleteOptions | async" [value]="option">
+                            {{option}}
+                        </mat-option>
+                    </mat-autocomplete>
                 </mat-form-field>
             </div>
+            <div>
+                <table
+                    mat-table
+                    [dataSource]="dataSource"
+                    multiTemplateDataRows
+                    matSort>
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                        <td mat-cell *matCellDef="let employee"> {{employee.name}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="salary">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Salary </th>
+                        <td mat-cell *matCellDef="let employee">{{employee.salary | currency:'USD'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="expand">
+                      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                      <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                          <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                          <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                        </button>
+                      </td>
+                    </ng-container>
+                    
+                    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                    <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let employee" [attr.colspan]="displayedColumnsWithExpand.length">
+                        <div #elementDetail
+                            class="employee-detail"
+                            [ngClass]="employee == expandedElement ? 'expanded' : 'collapsed'"
+                            style="--scroll-height: {{elementDetail.scrollHeight}}px;">
+                            <div *ngFor="let position of employee.positions; let lastItem = last">
+                                <div class="position-detail">
+                                    <p><b>Position:</b><span> {{position.title}}</span></p>
+                                    <p><b>College:</b><span> {{position.college}}</span></p>
+                                    <p><b>Department:</b><span> {{position.department}}</span></p>
+                                    <p><b>Position Salary:</b><span> {{position.positionSalary | currency:'USD'}}</span></p>
+                                    <p><b>Tenure:</b><span> {{position.tenure || 'None'}}</span></p>
+                                    <p><b>Pay Type:</b><span> {{position.payType}}</span></p>
+                                </div>
+                                <mat-divider *ngIf="!lastItem"></mat-divider>
+                            </div>
+                        </div>
+                        </td>
+                    </ng-container>
 
-            <mat-expansion-panel *ngFor="let record of records | filterRecords: nameSearch | slice: pageStart : pageEnd">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{record.name}}
-                    </mat-panel-title>
-                    <mat-panel-description>
-                        {{record.salary}}
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                <p><b>Position:</b><span style="float: right;">{{record.position}}</span></p>
-                <p><b>Category:</b><span style="float: right;">{{record.positionType}}</span></p>
-                <p><b>Department:</b><span style="float: right;">{{record.department}}</span></p>
-                <p><b>College:</b><span style="float: right;">{{record.college}}</span></p>
-                <p><b>Pay Type:</b><span style="float: right;">{{record.payType}}</span></p>
-            </mat-expansion-panel>
-
-            <mat-paginator [length]="records.length"
-                        [pageSize]="pageSize"
-                        (page)="getPageRange($event)">
-            </mat-paginator>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsWithExpand"></tr>
+                    <tr mat-row *matRowDef="let employee; columns: displayedColumnsWithExpand;"
+                        class="employee-row"
+                        [class.example-expanded-row]="expandedElement == employee"
+                        (click)="expandedElement = expandedElement == employee ? null : employee">
+                    </tr>
+                    <tr mat-row
+                        *matRowDef="let row; columns: ['expandedDetail']"
+                        class="employee-detail-row"></tr>
+                </table>
+                <mat-paginator [pageSize]="10"></mat-paginator>
+            </div>
         </div>
     </mat-tab>
 
@@ -61,22 +135,34 @@
                     There are no legal grounds for removal, but please contact us if you believe there is a
                     factual error with the published salary.
                 </p>
-
+                <br>
                 <h2>Are some salaries not included in the guide?</h2>
                 <p>
-                    Data included in the non-Gray Book excludes employees or jobs that are classified as extra help,
+                    Data included in the Gray Book excludes employees or jobs that are classified as extra help,
                     graduate assistant, pre-doctoral fellow, academic or graduate hourly, summer appointment,
                     medical resident, student, retiree or unpaid. It also does not include jobs classified as
                     cell phone stipend, deferred pay, lump sum, one time pay, sabbatical supplement,temporary
                     assignments or vacation payouts.
                 </p>
-
+                <br>
                 <h2>How often is the Salary Guide updated?</h2>
                 <p>
                     The Salary Guide is updated in the Fall semester each year. Salaries may be affected by events
                     throughout the year, including mid-year promotions or unpaid leaves, and do not include all
                     compensation, such as overtime and benefits. Factors such as experience, education and specialized
                     training can all influence how much employees are paid.
+                </p>
+                <br>
+                <h2>Can I get the raw data?</h2>
+                <p>
+                    Yes, the raw data is available
+                    <a href="https://github.com/Daily-Illini/salary-guide-widget/tree/main/src/assets">here.</a>
+                </p>
+                <br>
+                <h2>I'd like to request additional functionality. Who should I talk to?</h2>
+                <p>
+                    You can reach the Web Development Team at
+                    <a href="mailto:webdev@illinimedia.com">webdev@illinimedia.com</a>.
                 </p>
             </div>
         </div>
