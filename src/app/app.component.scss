@@ -1,13 +1,76 @@
+.searchContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    column-gap: 20px;
+}
 .searchOption {
-    margin: 20px;
+    flex: 1;
+}
+.filterField {
+    width: 100%;
 }
 .content {
-    height: 650px;
+    height: 800px;
     overflow: scroll;
 }
 .container {
     margin: 30px;
 }
-.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar{
-    background: #FF5F05;
+// .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+//     background-color: #FF5F05;
+// }
+
+table {
+    width: 100%;
+}
+
+.mat-column-name {
+    flex: none;
+    width: 50%;
+}
+
+.mat-column-salary {
+    flex: none;
+    width: 50%;
+}
+
+.mat-column-expand {
+    flex: none;
+    width: 0%;
+}
+
+tr.employee-detail-row {
+    height: 0;
+}
+
+tr.employee-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.employee-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.employee-row td {
+    border-bottom-width: 0;
+    padding-right: 10px;
+}
+
+.employee-detail {
+    overflow: hidden;
+    max-height: var(--scroll-height);
+    &.expanded {
+        transition: max-height .2s ease;
+    }
+    &.collapsed {
+        max-height: 0;
+        transition: max-height .2s ease;
+    }
+}
+
+.position-detail {
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
