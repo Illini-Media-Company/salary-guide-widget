@@ -91,12 +91,12 @@
                             style="--scroll-height: {{elementDetail.scrollHeight}}px;">
                             <div *ngFor="let position of employee.positions; let lastItem = last">
                                 <div class="position-detail">
-                                    <p><b>Position:</b><span> {{position.title}}</span></p>
-                                    <p><b>College:</b><span> {{position.college}}</span></p>
-                                    <p><b>Department:</b><span> {{position.department}}</span></p>
-                                    <p><b>Position Salary:</b><span> {{position.positionSalary | currency:'USD'}}</span></p>
-                                    <p><b>Tenure:</b><span> {{position.tenure || 'None'}}</span></p>
-                                    <p><b>Pay Type:</b><span> {{position.payType}}</span></p>
+                                    <p><span class="bold">Position:</span><span> {{position.title}}</span></p>
+                                    <p><span class="bold">College:</span><span> {{position.college}}</span></p>
+                                    <p><span class="bold">Department:</span><span> {{position.department}}</span></p>
+                                    <p><span class="bold">Position Salary:</span><span> {{position.positionSalary | currency:'USD'}}</span></p>
+                                    <p><span class="bold">Tenure:</span><span> {{position.tenure || 'None'}}</span></p>
+                                    <p><span class="bold">Pay Type:</span><span> {{position.payType}}</span></p>
                                 </div>
                                 <mat-divider *ngIf="!lastItem"></mat-divider>
                             </div>
