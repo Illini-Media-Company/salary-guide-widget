@@ -1,5 +1,6 @@
 # SalaryGuideWidget
 
+An embeddable angular widget for exploring salaries through the UI system. Demo: https://daily-illini.github.io/salary-guide-widget/
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.5.
 
 ## Development server
