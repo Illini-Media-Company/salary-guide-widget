@@ -1,9 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use "@angular/material" as mat;
+@use './theme' as theme;
+
 html, body {
     height: 100%;
 }
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+* {
+    font-family: 'canada-type-gibson', sans-serif;
+}
+a {
+    color: mat.get-color-from-palette(theme.$my-app-primary, default);
 }
