@@ -1,26 +1,33 @@
-.searchContainer {
+.search-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 20px;
     column-gap: 20px;
 }
-.searchOption {
+.search-option {
     flex: 1;
 }
-.filterField {
+.filter-field {
     width: 100%;
 }
 .content {
     height: 800px;
     overflow: scroll;
 }
-.container {
+.faq-container {
     margin: 30px;
+    font-size: 18px;
+    line-height: 1.5;
 }
 // .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
 //     background-color: #FF5F05;
 // }
+.heading {
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 18px;
+}
 
 table {
     width: 100%;

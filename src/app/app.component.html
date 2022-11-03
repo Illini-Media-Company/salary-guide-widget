@@ -1,29 +1,29 @@
 <mat-tab-group mat-stretch-tabs animationDuration="0ms">
-    <mat-tab label="Salary Lookup">
+    <mat-tab label="SALARY LOOKUP">
         <div class="content">
-            <div class="searchContainer">
-                <mat-form-field class="searchOption" appearance="outline">
+            <div class="search-container">
+                <mat-form-field class="search-option" appearance="outline">
                     <mat-label>Year</mat-label>
                     <mat-select [(value)]="defaultYear">
                         <mat-option value="2022">2022</mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field class="searchOption" appearance="outline">
+                <mat-form-field class="search-option" appearance="outline">
                     <mat-label>Campus</mat-label>
                     <mat-select [(value)]="defaultCampus">
                         <mat-option value="UIUC">UIUC</mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field class="searchOption" appearance="outline">
+                <mat-form-field class="search-option" appearance="outline">
                     <mat-label>Name</mat-label>
                     <input matInput
                         (keyup)="applyFilter($event)"
                         #nameInput>
                 </mat-form-field>
 
-                <mat-form-field class="filterField" appearance="outline">
+                <mat-form-field class="filter-field" appearance="outline">
                     <mat-label>Filters</mat-label>
                     <mat-chip-list #chipList>
                         <mat-chip
@@ -121,8 +121,8 @@
 
     <mat-tab label="FAQ">
         <div class="content">
-            <div class="container">
-                <h2>I don't like having my salary publicly available. Will you take it down?</h2>
+            <div class="faq-container">
+                <p class="heading">I don't like having my salary publicly available. Will you take it down?</p>
                 <p>
                     No. As an employee of a public entity, your salary is available as part of public record.
                     Salaries included in the Salary Guide are paid by tuition-paying students and tax dollars.
@@ -130,7 +130,7 @@
                     factual error with a published salary.
                 </p>
                 <br>
-                <h2>Are some salaries not included in the guide?</h2>
+                <p class="heading">Are some salaries not included in the guide?</p>
                 <p>
                     Data included in the Gray Book excludes employees or jobs that are classified as extra help,
                     graduate assistant, pre-doctoral fellow, academic or graduate hourly, summer appointment,
@@ -139,7 +139,7 @@
                     assignments or vacation payouts.
                 </p>
                 <br>
-                <h2>How often is the Salary Guide updated?</h2>
+                <p class="heading">How often is the Salary Guide updated?</p>
                 <p>
                     The Salary Guide is updated the Fall semester of each year. Salaries may be affected by events
                     throughout the year, including mid-year promotions or unpaid leaves, and do not include all
@@ -147,14 +147,14 @@
                     training can all influence how much employees are paid.
                 </p>
                 <br>
-                <h2>Can I get the raw data?</h2>
+                <p class="heading">Can I get the raw data?</p>
                 <p>
                     Yes, the raw data is available
                     <a href="https://github.com/Daily-Illini/salary-guide-widget/tree/main/src/assets">here.</a>
                 </p>
                 <br>
-                <h2>I'd like to request additional functionality. Who should I talk to?</h2>
-                <p>
+                <p class="heading">I'd like to request additional functionality. Who should I talk to?</p>
+                <p class="text-block">
                     You can reach the Daily Illini web development team at
                     <a href="mailto:webdev@illinimedia.com">webdev@illinimedia.com</a>.
                 </p>
