@@ -28,9 +28,6 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Pipenv
-package-lock.json
-
 # Miscellaneous
 /.angular/cache
 .sass-cache/
