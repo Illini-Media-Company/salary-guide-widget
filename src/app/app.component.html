@@ -1,18 +1,27 @@
 <mat-tab-group mat-stretch-tabs animationDuration="0ms">
-    <mat-tab label="SALARY LOOKUP">
+    <mat-tab>
+        <ng-template mat-tab-label><span class="tab-label">SALARY LOOKUP</span></ng-template>
         <div class="content">
             <div class="search-container">
                 <mat-form-field class="search-option" appearance="outline">
                     <mat-label>Year</mat-label>
-                    <mat-select [(value)]="defaultYear">
-                        <mat-option value="2022">2022</mat-option>
+                    <mat-select [(value)]="selectedYear" (selectionChange)="updateLocations()">
+                        <mat-option
+                            *ngFor="let year of years"
+                            value="{{year}}">
+                            {{year}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <mat-form-field class="search-option" appearance="outline">
                     <mat-label>Campus</mat-label>
-                    <mat-select [(value)]="defaultCampus">
-                        <mat-option value="UIUC">UIUC</mat-option>
+                    <mat-select [(value)]="selectedLocation" (selectionChange)="updateRecords()">
+                        <mat-option
+                            *ngFor="let location of locationLabels"
+                            value="{{location}}">
+                            {{location}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -59,6 +68,7 @@
                 </mat-form-field>
             </div>
             <div>
+                <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
                 <table
                     mat-table
                     [dataSource]="dataSource"
@@ -119,7 +129,8 @@
         </div>
     </mat-tab>
 
-    <mat-tab label="FAQ">
+    <mat-tab>
+        <ng-template mat-tab-label><span class="tab-label">FAQ</span></ng-template>
         <div class="content">
             <div class="faq-container">
                 <p class="heading">I don't like having my salary publicly available. Will you take it down?</p>

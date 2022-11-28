@@ -17,10 +17,15 @@ import { Employee } from './employee';
 })
 export class AppComponent implements OnInit {
   title = 'salary-guide-widget';
-  pageSize = 10;
-  pageStart = 0;
-  pageEnd = 10;
 
+  years: string[] = [];
+  locationLabels: string[] = [];
+  locations = new Map<string, string>();
+  
+  selectedYear = '';
+  selectedLocation = '';
+
+  isLoading = true;
   records: Employee[] = [];
   colleges: string[] = [];
   departments: string[] = [];
@@ -30,9 +35,6 @@ export class AppComponent implements OnInit {
   filterDepartment = '';
   autocompleteOptions = new Subject<string[]>();
   filteredRecords: Employee[] = [];
-
-  defaultYear = '2022';
-  defaultCampus = 'UIUC';
 
   nameCtrl = new FormControl('');
 
@@ -67,16 +69,46 @@ export class AppComponent implements OnInit {
       })
     ).subscribe(this.autocompleteOptions);
 
-    this.httpClient.get('assets/2022.json').subscribe(data => {
+    this.httpClient.get('assets/contents.txt', {responseType: 'text'}).subscribe(data => {
+      this.years = data.split('\n').filter(x => x).sort().reverse();
+      this.selectedYear = this.years[0];
+      this.updateLocations();
+    })
+  }
+
+  updateLocations(): void {
+    this.isLoading = true;
+    this.httpClient.get(`assets/${this.selectedYear}/contents.txt`, {responseType: 'text'}).subscribe(data => {
+      const locations = new Map<string, string>();
+      const entries = data.split('\n').filter(x => x).sort().reverse();
+      for (const entry of entries) {
+        const [key, ...value] = entry.split(':');
+        const filename = value.join(':');
+        locations.set(key, filename);
+      }
+      this.locationLabels = Array.from(locations.keys());
+      this.locations = locations;
+      this.selectedLocation = this.locations.keys().next().value;
+      this.updateRecords();
+    })
+  }
+
+  updateRecords(): void {
+    this.isLoading = true;
+    const filename = this.locations.get(this.selectedLocation);
+    this.httpClient.get(`assets/${this.selectedYear}/${filename}`).subscribe(data => {
       this.records = data as Employee[];
       for (const employee of this.records) {
         employee.positions.sort((a, b) => b.positionSalary - a.positionSalary);
       }
       this.filteredRecords = this.records;
+      this.filterCollege = '';
+      this.filterDepartment = '';
     
+      this.paginator.firstPage();
       this.dataSource = new MatTableDataSource(this.records);
-      this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
       this.dataSource.filterPredicate = (data: Employee, filter: string) => {
         const filterValue = filter.toLowerCase();
         return data.name.toLowerCase().includes(filterValue);
@@ -94,11 +126,15 @@ export class AppComponent implements OnInit {
           }
         }
       }
+
       this.colleges = Array.from(departmentMapping.keys()).sort();
+      const departmentsByCollege = new Map<string, string[]>();
       for (const [college, departments] of departmentMapping) {
-        this.departmentsByCollege.set(college, Array.from(departments).sort());
+        departmentsByCollege.set(college, Array.from(departments).sort());
       }
+      this.departmentsByCollege = departmentsByCollege;
       this.autocompleteOptions.next(this.colleges.slice());
+      this.isLoading = false;
     });
   }
 
@@ -134,22 +170,14 @@ export class AppComponent implements OnInit {
     this._filterRecords();
   }
 
-  getPageRange(event: PageEvent): PageEvent {
-    this.pageStart = event.pageIndex * this.pageSize;
-    this.pageEnd = this.pageStart + this.pageSize;
-    return event;
-  }
-
   applyFilter(event: Event) {
+    this.paginator.firstPage();
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 
   private _filterRecords() {
+    this.paginator.firstPage();
     if (this.filterDepartment) {
       this.filteredRecords = this.filteredRecords.filter(employee =>
         employee.positions.some(position => position.department === this.filterDepartment)
