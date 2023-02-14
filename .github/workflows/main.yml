@@ -6,9 +6,9 @@ jobs:
     name: Build Angular app
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.3
+        uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v3.6
+        uses: actions/setup-node@v3
         with:
           node-verion: '16.x'
       - name: Install dependencies
