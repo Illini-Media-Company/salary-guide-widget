@@ -8,7 +8,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.3.0
       - name: Switch branch
-        run: git checkout dist
+        run: |
+          git branch dist origin/dist
+          git checkout dist
       - name: Setup Node.js
         uses: actions/setup-node@v3.6.0
         with:
