@@ -9,6 +9,8 @@ jobs:
         uses: actions/checkout@v3.3.0
       - name: Switch branch
         run: |
+          git config user.name "Deploy to Pages workflow"
+          git config user.email "<>"
           git branch dist origin/dist
           git checkout dist
       - name: Setup Node.js
@@ -25,8 +27,6 @@ jobs:
           cp -r dist/salary-guide-widget/ .
       - name: Push changes
         run: |
-          git config user.name "Deploy to Pages workflow"
-          git config user.email "<>"
           git add .
           git commit -m "Deploy changes"
           git push
