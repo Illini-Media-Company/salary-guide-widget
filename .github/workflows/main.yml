@@ -1,0 +1,30 @@
+on: [push]
+
+jobs:
+  deploy_to_pages:
+  runs-on: ubuntu-latest
+  name: Deploy to Pages
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3.3.0
+      with:
+        ref: dist
+    - name: Setup Node.js
+      uses: actions/setup-node@v3.6.0
+      with:
+        node-verion: '16.x'
+    - name: Install dependencies
+      run: npm ci
+    - name: Sync
+      run: git reset --hard main
+    - name: Build app
+      run: |
+        ./build.sh
+        cp -r dist/salary-guide-widget/ .
+    - name: Push changes
+      run: |
+        git config user.name "Deploy to Pages workflow"
+        git config user.email "<>"
+        git add .
+        git commit -m "Deploy changes"
+        git push
