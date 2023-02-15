@@ -6,15 +6,11 @@ An [embeddable Angular widget](https://daily-illini.github.io/salary-guide-widge
 
 First, make sure you have Node.js and the [Angular CLI](https://github.com/angular/angular-cli) installed. Then clone the repository on your local machine.
 
-### Branches
+### Development
 
-The `main` branch is the development branch. This is the branch that changes should be pushed to before going live.
-
-The `dist` branch is the distribution branch. This branch reflects the [live application](https://daily-illini.github.io/salary-guide-widget/) on the Daily Illini website.
+Do any substantial development work in a new branch. After you've tested out and committed your changes, create a pull request against the `main` branch, which reflects the [live application](https://daily-illini.github.io/salary-guide-widget/) on the Daily Illini website. Any push to the `main` branch will trigger a workflow that will update the live application.
 
 ### Viewing Changes
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 Run `ng serve` to start a development server, then in a browser tab, navigate to `http://localhost:4200/` to view the widget.
 
@@ -41,19 +37,13 @@ The TypeScript (.ts) file describes the underlying logic for the widget and mana
 
 *add more documentation stuff*
 
-### `assets/`
+### `src/assets/`
 
 This directory contains the salary guide data per academic year in various JSON files. 
 
 The widget pulls these files and filters the data by using GET requests to fetch the appropriate information. The `contents.txt` text files map the salary data to the widget's class variables. 
 
 You can see the implementation in `app.component.ts` whenever the `httpClient` executes a `get()` request.
-
-## Deployment
-
-After you've made changes and tested them out, make sure you're on the main branch (`git checkout main`) and push your changes.
-
-Next, switch to the distribution branch with `git checkout dist` and run `./build.sh`. Then copy the files in `dist/` to the root directory. Push changes and you're all set!
 
 ## Resources
 
