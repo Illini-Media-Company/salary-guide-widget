@@ -10,7 +10,8 @@ body {
     margin: 0;
 }
 * {
-    font-family: 'canada-type-gibson', sans-serif;
+    font-family: Montserrat;
+    font-weight: 500;
 }
 a {
     color: mat.get-color-from-palette(theme.$my-app-primary, default);
