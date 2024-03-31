@@ -1,4 +1,0 @@
-UIUC:UIUC.json
-UIC:UIC.json
-UIS:UIS.json
-UI System:System.json
