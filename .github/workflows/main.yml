@@ -18,7 +18,7 @@ jobs:
         run: npm ci
       - name: Build app
         run: |
-          npm run-script ng -- build --configuration production --base-href "https://daily-illini.github.io/salary-guide-widget/"
+          npm run-script ng -- build --configuration production --base-href "https://illini-media-company.github.io/salary-guide-widget/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
