@@ -1,1 +1,1 @@
-ng build --configuration production --base-href "https://daily-illini.github.io/salary-guide-widget/"
+ng build --configuration production --base-href "https://illini-media-company.github.io/salary-guide-widget/"

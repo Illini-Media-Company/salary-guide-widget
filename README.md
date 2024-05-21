@@ -1,6 +1,6 @@
 # Daily Illini Salary Guide Widget 💸
 
-An [embeddable Angular widget](https://daily-illini.github.io/salary-guide-widget/) for exploring salaries in the UI system. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version `14.2.5`.
+An [embeddable Angular widget](https://illini-media-company.github.io/salary-guide-widget/) for exploring salaries in the UI system. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version `14.2.5`.
 
 ## Setup
 
@@ -8,7 +8,7 @@ First, make sure you have Node.js and the [Angular CLI](https://github.com/angul
 
 ### Development
 
-Do any substantial development work in a new branch. After you've tested out and committed your changes, create a pull request against the `main` branch, which reflects the [live application](https://daily-illini.github.io/salary-guide-widget/) on the Daily Illini website. Any push to the `main` branch will trigger a workflow that will update the live application.
+Do any substantial development work in a new branch. After you've tested out and committed your changes, create a pull request against the `main` branch, which reflects the [live application](https://illini-media-company.github.io/salary-guide-widget/) on the Daily Illini website. Any push to the `main` branch will trigger a workflow that will update the live application.
 
 ### Viewing Changes
 
